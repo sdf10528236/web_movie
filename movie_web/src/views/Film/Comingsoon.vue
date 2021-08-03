@@ -27,6 +27,7 @@ export default {
       console.log("使用緩存數據");
     }
   },
+  computed: {},
 };
 </script>
 <style scoped>
