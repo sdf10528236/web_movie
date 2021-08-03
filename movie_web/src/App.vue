@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tabbar v-show="$store.state.istabbarshow"></tabbar>
+    <tabbar v-show="istabbarshow"></tabbar>
 
     <!--路由容器 -->
     <router-view></router-view>
@@ -12,6 +12,7 @@
 import navbar from "./components/Navbar.vue";
 import sidebar from "./components/Sidebar.vue";
 import tabbar from "./components/Tabbar.vue";
+import { mapState } from "vuex";
 // import axios from "axios";
 
 import Vue from "vue";
@@ -36,6 +37,9 @@ export default {
       this.datalist.push({ text: this.$refs.mytext.value, id: i });
       i++;
     },
+  },
+  computed: {
+    ...mapState(["istabbarshow"]),
   },
   components: {
     tabbar,

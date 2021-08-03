@@ -10,6 +10,11 @@ export default new Vuex.Store({
     ComingList:[],
     NowplayinList:[],
   },
+  getters:{
+    comingListGetter(state){
+      return state.ComingList.filter((item,index)=>index<3)
+    }
+  },
   mutations: {
     //唯一修改狀態的位置
     HideTabbar(state,data){
@@ -35,7 +40,7 @@ export default new Vuex.Store({
     },
   
   getNowplayinListAction(store){
-    axios.get("https://m.maoyan.com/ajax/movieOnInfoList?token=").then((res) => {
+    axios.get("/ajax/movieOnInfoList?token=").then((res) => {
        console.log(res.data);
      store.commit("NowplayinListMutation",res.data.movieList)
     });
