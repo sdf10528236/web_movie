@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul>
-      <li v-for="data in this.$store.state.ComingList" :key="data.id">
+      <li v-for="data in comingListGetter" :key="data.id">
         <img :src="data.img | kerwinpath" />
         <h3>{{ data.nm }}</h3>
         <p>上映日期:{{ data.rt }}</p>
@@ -14,6 +14,7 @@
 <script>
 /* eslint-disable */
 import Vue from "vue";
+import { mapGetters } from "vuex";
 
 Vue.filter("kerwinpath", function (path) {
   return path.replace("w.h", "96.135");
@@ -27,7 +28,9 @@ export default {
       console.log("使用緩存數據");
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["comingListGetter"]),
+  },
 };
 </script>
 <style scoped>

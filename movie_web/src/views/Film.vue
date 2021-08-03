@@ -48,8 +48,9 @@ export default {
   mounted() {
     axios.get("/ajax/movieOnInfoList?token=").then((res) => {
       // console.log(res.data);
-      this.looplist = res.data.movieList.slice(5, 12);
+      this.looplist = res.data.movieList;
     });
+
     window.onscroll = this.handleScroll;
   },
   beforeDestry() {

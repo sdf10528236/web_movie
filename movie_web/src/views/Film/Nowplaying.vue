@@ -1,8 +1,13 @@
 <template>
   <div>
-    <ul>
+    <ul
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="loading"
+      infinite-scroll-distance="0"
+      infinite-scroll-immediate-check="false"
+    >
       <li
-        v-for="data in this.$store.state.NowplayinList"
+        v-for="data in NowplayinList"
         :key="data.id"
         @click="handleChangePage(data.id)"
       >
@@ -17,24 +22,36 @@
 
 <script>
 /* eslint-disable */
-
+import { mapState } from "vuex";
 import Vue from "vue";
+import axios from "axios";
 
 Vue.filter("kerwinpath", function (path) {
-  return path.replace("w.h", "96.135");
+  if (!path) {
+    return "";
+  } else {
+    return path.replace("w.h", "96.135");
+  }
 });
 
 export default {
   data() {
     return {
       datalist: [],
+      loading: false,
+      idnum: 0,
+      listid: [],
+      idaddress: "",
     };
+  },
+  computed: {
+    ...mapState(["NowplayinList", "NowplayinIdList"]),
   },
   mounted() {
     if (this.$store.state.NowplayinList.length === 0) {
       this.$store.dispatch("getNowplayinListAction");
     } else {
-      console.log("使用緩存數據");
+      console.log(this.idnum);
     }
   },
 
@@ -45,6 +62,35 @@ export default {
       // this.$router.push(`/detail/${id}`);
       //編程式導航-名字跳轉
       this.$router.push({ name: "kerwindtail", params: { id: id } });
+    },
+
+    loadMore() {
+      this.loading = true;
+      if (this.idnum === 0) {
+        this.idnum = this.NowplayinList.length;
+      }
+
+      console.log(this.idnum);
+      this;
+      console.log(
+        this.$store.state.NowplayinListId.slice(this.idnum + 1, this.idnum + 10)
+      );
+      this.listid = this.$store.state.NowplayinListId.slice(
+        this.idnum + 1,
+        this.idnum + 10
+      );
+      console.log(this.listid);
+      for (var i = 0; i < this.listid.length; i++) {
+        this.idaddress += this.listid.__ob__.value[i];
+      }
+      console.log(this.idaddress);
+      console.log("到底了");
+      setTimeout(() => {
+        axios.get("/ajax/comingList?ci=10&token=").then((res) => {
+          console.log(res.data);
+        });
+        this.loading = false;
+      }, 2500);
     },
   },
 };
