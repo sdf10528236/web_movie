@@ -1,0 +1,10 @@
+<template>
+  <aside>
+    sidebar
+    <ul>
+      <li>11111111111</li>
+      <li>11111111111</li>
+      <li>11111111111</li>
+    </ul>
+  </aside>
+</template>
