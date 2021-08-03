@@ -1,0 +1,4 @@
+
+.icon-home:before { content: '\e800'; } /* '' */
+.icon-basket:before { content: '\e801'; } /* '' */
+.icon-user:before { content: '\f061'; } /* '' */
