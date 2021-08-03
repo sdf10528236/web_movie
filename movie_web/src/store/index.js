@@ -35,7 +35,7 @@ export default new Vuex.Store({
     },
   
   getNowplayinListAction(store){
-    axios.get("/ajax/movieOnInfoList?token=").then((res) => {
+    axios.get("https://m.maoyan.com/ajax/movieOnInfoList?token=").then((res) => {
        console.log(res.data);
      store.commit("NowplayinListMutation",res.data.movieList)
     });
