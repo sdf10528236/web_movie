@@ -19,6 +19,8 @@
   color: orange;
 }
 nav {
+  display: block;
+
   position: fixed;
   bottom: 0px;
   left: 0px;

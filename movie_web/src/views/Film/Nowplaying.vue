@@ -25,6 +25,7 @@
 import { mapState } from "vuex";
 import Vue from "vue";
 import axios from "axios";
+import { Indicator } from "mint-ui";
 
 Vue.filter("kerwinpath", function (path) {
   if (!path) {
@@ -42,16 +43,17 @@ export default {
       idnum: 0,
       listid: [],
       idaddress: "",
+      isshow: true,
     };
   },
   computed: {
-    ...mapState(["NowplayinList", "NowplayinIdList"]),
+    ...mapState(["NowplayinList", "NowplayinIdList", "NowplayinListTotal"]),
   },
   mounted() {
     if (this.$store.state.NowplayinList.length === 0) {
       this.$store.dispatch("getNowplayinListAction");
     } else {
-      console.log(this.idnum);
+      console.log("使用緩存數據");
     }
   },
 
@@ -66,37 +68,102 @@ export default {
 
     loadMore() {
       this.loading = true;
-      if (this.idnum === 0) {
-        this.idnum = this.NowplayinList.length;
-      }
-
+      console.log(this.NowplayinListTotal);
+      this.idnum = this.NowplayinList.length;
       console.log(this.idnum);
-      this;
-      console.log(
-        this.$store.state.NowplayinListId.slice(this.idnum + 1, this.idnum + 10)
-      );
-      this.listid = this.$store.state.NowplayinListId.slice(
-        this.idnum + 1,
-        this.idnum + 10
-      );
-      console.log(this.listid);
-      for (var i = 0; i < this.listid.length; i++) {
-        this.idaddress += this.listid.__ob__.value[i];
-      }
-      console.log(this.idaddress);
-      console.log("到底了");
-      setTimeout(() => {
-        axios.get("/ajax/comingList?ci=10&token=").then((res) => {
-          console.log(res.data);
+      if (this.idnum + 10 > this.NowplayinListTotal) {
+        if (this.idnum === this.NowplayinListTotal) {
+          console.log("數據加載完成....");
+        } else {
+          this.listid = this.$store.state.NowplayinListId.slice(
+            this.idnum,
+            this.NowplayinListTotal
+          );
+
+          for (var i = 0; i < this.listid.length; i++) {
+            if (i === 0) {
+              this.idaddress += this.listid.__ob__.value[i];
+            } else {
+              this.idaddress += "%2C" + this.listid.__ob__.value[i];
+            }
+          }
+
+          Indicator.open({
+            text: "加载中...",
+            spinnerType: "fading-circle",
+          });
+
+          setTimeout(() => {
+            axios
+              .get(
+                "/ajax/moreComingList?token=&movieIds=" +
+                  this.idaddress +
+                  "&optimus_uuid=05803E70EEA411EBBD813B357E278EC0B683A183E55A4125B0F58D5CEDEA0485&optimus_risk_level=71&optimus_code=10"
+              )
+              .then((res) => {
+                console.log(res.data.coming);
+                this.$store.commit(
+                  "NowplayinListMutation",
+                  this.NowplayinList.concat(res.data.coming)
+                );
+                console.log(this.NowplayinList);
+                Indicator.close();
+              });
+            this.loading = false;
+            this.idaddress = "";
+          }, 2000);
+        }
+      } else {
+        this.listid = this.$store.state.NowplayinListId.slice(
+          this.idnum,
+          this.idnum + 10
+        );
+        console.log(this.listid);
+        for (var i = 0; i < this.listid.length; i++) {
+          if (i === 0) {
+            this.idaddress += this.listid.__ob__.value[i];
+          } else {
+            this.idaddress += "%2C" + this.listid.__ob__.value[i];
+          }
+        }
+
+        console.log(this.idaddress);
+        console.log("到底了");
+
+        Indicator.open({
+          text: "加载中...",
+          spinnerType: "fading-circle",
         });
-        this.loading = false;
-      }, 2500);
+
+        setTimeout(() => {
+          axios
+            .get(
+              "/ajax/moreComingList?token=&movieIds=" +
+                this.idaddress +
+                "&optimus_uuid=05803E70EEA411EBBD813B357E278EC0B683A183E55A4125B0F58D5CEDEA0485&optimus_risk_level=71&optimus_code=10"
+            )
+            .then((res) => {
+              console.log(res.data.coming);
+              this.$store.commit(
+                "NowplayinListMutation",
+                this.NowplayinList.concat(res.data.coming)
+              );
+              console.log(this.NowplayinList);
+              Indicator.close();
+            });
+          this.loading = false;
+          this.idaddress = "";
+        }, 2500);
+      }
     },
   },
 };
 </script>
 
 <style scoped>
+ul {
+  padding-bottom: 50px;
+}
 ul li {
   overflow: hidden;
   padding: 10px;

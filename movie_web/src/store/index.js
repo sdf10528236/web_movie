@@ -11,6 +11,7 @@ export default new Vuex.Store({
     ComingList:[],
     NowplayinList:[],
     NowplayinListId:[],
+    NowplayinListTotal:0
   },
   getters:{
     comingListGetter(state){
@@ -33,7 +34,11 @@ export default new Vuex.Store({
     },
     NowplayinListIdMutation(state,data){
       state.NowplayinListId=data;
-    }
+    },
+    NowplayinListTotalMutation(state,data){
+      state.NowplayinListTotal=data;
+    },
+    
   },
   actions: {
     //異步處理
@@ -43,7 +48,7 @@ export default new Vuex.Store({
         spinnerType: 'fading-circle'
       });
       axios.get("/ajax/comingList?ci=10&token=").then((res) => {
-         console.log(res.data);
+        console.log(res.data);
        store.commit("CominListMutation",res.data.coming)
        Indicator.close();
       });
@@ -55,7 +60,8 @@ export default new Vuex.Store({
       spinnerType: 'fading-circle'
     });
     axios.get("/ajax/movieOnInfoList?token=").then((res) => {
-       console.log(res.data);
+      //  console.log(res.data);
+     store.commit("NowplayinListTotalMutation",res.data.total)
      store.commit("NowplayinListMutation",res.data.movieList)
      store.commit("NowplayinListIdMutation",res.data.movieIds)
      Indicator.close();

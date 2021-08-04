@@ -27,7 +27,7 @@ const routes = [
       },
       {
         path:"",
-        redirect:"/film/nowplaying"
+        redirect:"nowplaying"
       },
     ]
   },
