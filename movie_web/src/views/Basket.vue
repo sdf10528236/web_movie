@@ -1,3 +1,3 @@
 <template>
-  <div>cinema</div>
+  <div>購物車</div>
 </template>

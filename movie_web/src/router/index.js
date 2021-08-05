@@ -2,8 +2,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Film from '@/views/Film' 
-import Cinema from '@/views/Cinema' 
+import Basket from '@/views/Basket' 
 import Center from '@/views/Center' 
+import City from '@/views/City' 
 import Nowplaying from '@/views/Film/Nowplaying'
 import Comingsoon from '@/views/Film/Comingsoon'
 import Detail from'@/views/Detail'
@@ -32,8 +33,8 @@ const routes = [
     ]
   },
   {
-    path: '/cinema',
-    component: Cinema
+    path: '/basket',
+    component: Basket
   },
   {
     path:"/detail/:id",
@@ -47,6 +48,10 @@ const routes = [
   {
     path: '/login',
     component: Login
+  },
+  {
+    path: '/city',
+    component: City
   },
   {
     path: '*',

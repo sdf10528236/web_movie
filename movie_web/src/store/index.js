@@ -11,7 +11,8 @@ export default new Vuex.Store({
     ComingList:[],
     NowplayinList:[],
     NowplayinListId:[],
-    NowplayinListTotal:0
+    NowplayinListTotal:0,
+    City:"桃園",
   },
   getters:{
     comingListGetter(state){
@@ -37,6 +38,9 @@ export default new Vuex.Store({
     },
     NowplayinListTotalMutation(state,data){
       state.NowplayinListTotal=data;
+    },
+    CityMutation(state,data){
+      state.City=data;
     },
     
   },

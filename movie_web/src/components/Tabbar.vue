@@ -4,7 +4,7 @@
       <router-link to="/film" tag="li" active-class="myactive"
         ><i class="demo-icon icon-home"></i>Home
       </router-link>
-      <router-link to="/cinema" tag="li" active-class="myactive">
+      <router-link to="/basket" tag="li" active-class="myactive">
         <i class="demo-icon icon-basket"></i>Basket
       </router-link>
       <router-link to="/center" tag="li" active-class="myactive">

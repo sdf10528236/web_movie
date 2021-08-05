@@ -7,6 +7,14 @@
         :key="index"
       >
         <img :src="data" />
+        <router-link to="/city"
+          ><mt-badge
+            size="normal"
+            style="position: absolute; top: 20px; left: 20px; opacity: 0.4"
+            color="#777"
+            >地區:{{ localcity }}</mt-badge
+          >
+        </router-link>
       </div>
     </swiper>
 
@@ -21,6 +29,7 @@ import swiper from "@/views/Film/Swiper";
 import filmhider from "@/views/Film/Filmhider";
 import axios from "axios";
 import Vue from "vue";
+import { mapState } from "vuex";
 
 Vue.filter("kerwinpath", function (path) {
   return path.replace("w.h", "180.96");
@@ -38,6 +47,7 @@ export default {
         "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fG1vdmllfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60",
       ],
       isfixed: false,
+      localcity: "",
     };
   },
   components: {
@@ -50,7 +60,7 @@ export default {
       // console.log(res.data);
       this.looplist = res.data.movieList;
     });
-
+    this.localcity = this.City;
     window.onscroll = this.handleScroll;
   },
   beforeDestry() {
@@ -68,6 +78,9 @@ export default {
         this.isfixed = false;
       }
     },
+  },
+  computed: {
+    ...mapState(["City"]),
   },
 };
 </script>
